@@ -1,0 +1,119 @@
+<Window xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:MapraBookPlayer.ReactiveUI.ViewModels"
+		xmlns:local="using:MapraBookPlayer.Domain"
+		xmlns:rx="clr-namespace:ReactiveUI;assembly=ReactiveUI"
+		xmlns:ic="using:FluentIcons.Avalonia.Fluent"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="MapraBookPlayer.ReactiveUI.Views.Player"
+		x:DataType="vm:PlayerViewModel"
+		ShowInTaskbar="False"
+		CanResize="False"
+		WindowStartupLocation="CenterOwner"
+		MaxHeight="720"
+		MaxWidth="900"
+		Title="Player">
+
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+			 to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:PlayerViewModel/>
+	</Design.DataContext>
+	<TabControl Margin="15">
+		<TabItem Header="Now Playing">
+			<Grid
+				RowDefinitions="Auto,Auto,*"
+				Margin="9">
+				<StackPanel Grid.Row="0" Orientation="Vertical">
+					<Label FontWeight="ExtraBold" Content="{Binding AudioBook.Title}"></Label>
+					<Label Content="{Binding AudioBook.Author}"></Label>
+					<TextBlock FontWeight="Light" Text="{Binding AudioBook.Description}"></TextBlock>
+				</StackPanel>
+				<DockPanel Grid.Row="1" Margin="9">
+					<TextBlock Foreground="BlueViolet" Margin="0 5" DockPanel.Dock="Top">Chapters:</TextBlock>
+					<ListBox SelectionMode="Single" SelectionChanged="Chapters_SelectionChanged" x:Name="chapters">
+						<ListBox.ItemTemplate>
+							<DataTemplate x:DataType="local:Chapter">
+								<Border BorderThickness="0.7"
+										CornerRadius="4" Padding="4">
+									<TextBlock Text="{Binding ChapterName}"/>
+								</Border>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</DockPanel>
+				<StackPanel Margin="15" Grid.Row="2">
+					<StackPanel Spacing="10" VerticalAlignment="Center">
+						<StackPanel Spacing="9" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+							<Button Height="40" Width="40" Background="Transparent" Command="{Binding PlayCommand}">
+								<ic:SymbolIcon Foreground="BlueViolet" Height="24" Width="24" Symbol="PlayCircle" IsFilled="{Binding PlayFilled}" />
+							</Button>
+							<Button Height="40" Width="40" Background="Transparent" Command="{Binding PauseCommand}">
+								<ic:SymbolIcon Foreground="BlueViolet" Height="24" Symbol="PauseCircle" IsFilled="{Binding PauseFilled}" />
+							</Button>
+							<Button Height="40" Width="40" Background="Transparent" Command="{Binding StopCommand}">
+								<ic:SymbolIcon Foreground="BlueViolet" Height="24" Symbol="Stop" IsFilled="{Binding StopFilled}" />
+							</Button>
+							<Button Click="AddBookmark_Click" Height="40" Width="40" Background="Transparent">
+								<ic:SymbolIcon Foreground="BlueViolet" Height="24" Symbol="BookmarkAdd" />
+							</Button>
+						</StackPanel>
+						<Image Margin="5" Stretch="Fill" MaxHeight="220" Source="{Binding AudioBook.Image}" />
+						<Slider Minimum="0"
+								ValueChanged="Slider_ValueChanged"
+								Maximum="{Binding AudioFileLength}"
+								Value="{Binding Position}"
+								Margin="0,10,0,0"
+								/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</TabItem>
+		<TabItem Header="Bookmarks">
+			<DockPanel Margin="15">
+				<StackPanel DockPanel.Dock="Top" Margin="5">
+					<ListBox MaxHeight="400" SelectionMode="Single" SelectionChanged="Bookmarks_SelectionChanged" x:Name="bookmarksList">
+						<ListBox.ItemTemplate>
+							<DataTemplate x:DataType="local:Bookmark">
+								<Border BorderThickness="1"
+										CornerRadius="4" Padding="4">
+									<TextBlock Text="{Binding Mark}"/>
+								</Border>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</StackPanel>
+				<StackPanel Spacing="9" Margin="15">
+					<Label FontWeight="Bold" FontSize="18" x:Name="lblMark"></Label>
+					<TextBlock Padding="9" FontWeight="DemiBold" Foreground="BlueViolet" x:Name="txtHeader" />
+					<ScrollViewer>
+						<TextBlock MaxHeight="100" TextWrapping="Wrap" Padding="9" x:Name="txtDescription" />
+					</ScrollViewer>
+					<StackPanel Margin="5" Spacing="25" Orientation="Horizontal">
+						<Button x:Name="btnEditBookmark"
+								IsVisible="False"
+								Height="40"
+								Width="40"
+								ToolTip.Tip="Add or Edit the details"
+								Background="Transparent"
+								Click="ButtonEditBookmark_Click"
+								>
+							<ic:SymbolIcon Height="32" Width="32" Foreground="BlueViolet" Symbol="Edit"></ic:SymbolIcon>
+						</Button>
+						<Button x:Name="btnDeleteBookmark"
+								Background="Transparent"
+								IsVisible="False"
+								Height="40"
+								Width="40"
+								ToolTip.Tip="Delete the bookmark"
+								Click="ButtonDeleteBookmark_Click">
+							<ic:SymbolIcon Height="32" Width="32" Foreground="BlueViolet" Symbol="Delete"></ic:SymbolIcon>
+						</Button>
+					</StackPanel>
+				</StackPanel>
+			</DockPanel>
+		</TabItem>
+	</TabControl>
+</Window>

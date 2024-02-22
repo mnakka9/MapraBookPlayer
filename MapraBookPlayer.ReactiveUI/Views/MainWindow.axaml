@@ -1,0 +1,67 @@
+<Window xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:MapraBookPlayer.ReactiveUI.ViewModels"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="MapraBookPlayer.ReactiveUI.Views.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
+		Icon="/Assets/avalonia-logo.ico"
+		WindowState="Maximized"
+		WindowStartupLocation="CenterScreen"
+		Title="MapraBookPlayer.ReactiveUI">
+
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+			 to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<Grid RowDefinitions="Auto, *"
+		  ColumnDefinitions="Auto,*">
+		<TextBlock Padding="15"
+				   FontWeight="ExtraBold"
+				   Foreground="BlueViolet"
+				   FontSize="27"
+				   Grid.Row="0" 
+				   Grid.Column="0" 
+				   Grid.ColumnSpan="2"
+				   Text="Mapra Book Player"
+				   TextWrapping="Wrap" />
+		<Button Padding="15"
+				Margin="15"
+				Grid.Row="1"
+				Grid.Column="0"
+				Foreground="White"
+				Background="DarkBlue"
+				VerticalAlignment="Top"
+				x:Name="AddNew"
+				Click="AddNew_Click"
+				Content="Add New"></Button>
+		<DockPanel Margin="9"
+				   Grid.Row="1"
+				   Grid.Column="1">
+			<Label Content="Library"
+				   Foreground="#0078D7"
+				   FontWeight="Bold"
+				   FontSize="18"
+				   DockPanel.Dock="Top"></Label>
+			<ItemsControl ItemsSource="{Binding AudioBooks}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Margin="15" MaxHeight="220" MaxWidth="200" Orientation="Vertical">
+							<Image Height="180" Source="{Binding Image}" PointerPressed="Image_PointerPressed"></Image>
+							<Label Content="{Binding Title}"></Label>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</DockPanel>
+				   
+	</Grid>
+
+</Window>

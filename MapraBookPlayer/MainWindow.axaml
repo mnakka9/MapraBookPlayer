@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MapraBookPlayer.MainWindow"
+		xmlns:vm="using:MapraBookPlayer.Domain"
+        Title="MapraBookPlayer">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+		<DockPanel
+			Margin="10"
+			>
+		<Label FontWeight="UltraBold"
+			   FontSize="27"
+			   Foreground="#584BD1"
+			   Content="Mapra Book Player"></Label>
+			<Button Background="BlueViolet"
+					Foreground="White"
+					MaxHeight="150"
+					Width="100"
+					x:Name="AddNewBookButton"
+					Margin="8"
+					HorizontalContentAlignment="Center"
+					VerticalAlignment="Top"
+					HorizontalAlignment="Right"
+					>Add New</Button>
+		</DockPanel>
+		<DockPanel Margin="9"
+				   LastChildFill="True"
+				   Grid.Row="1">
+			<Label Padding="10" FontWeight="UltraBold"
+			   FontSize="18"
+			   Foreground="BlueViolet"
+			   DockPanel.Dock="Top"
+			   Content="Library"></Label>
+			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+				<ItemsControl x:DataType="vm:AudioBook">
+					<ItemsControl.DataTemplates>
+						<DataTemplate>
+							<UniformGrid>
+								<StackPanel Spacing="5" Orientation="Vertical">
+									<Label Content="{Binding Title}"></Label>
+								</StackPanel>
+							</UniformGrid>
+						</DataTemplate>
+					</ItemsControl.DataTemplates>
+				</ItemsControl>
+			</ScrollViewer>
+		</DockPanel>
+	</Grid>
+</Window>
